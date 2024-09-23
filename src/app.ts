@@ -1,7 +1,7 @@
 import express, { Application, Request, Response } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import userRoutes from "./routes/user.routes";
+import urlRoutes from "./routes/url.routes";
 import { globalErrorHandler } from "./middleware/errorhandler";
 dotenv.config();
 
@@ -16,7 +16,7 @@ app.get("/", (req: Request, res: Response) => {
   res.send("Hello World!");
 });
 
-app.use("/api", userRoutes);
+app.use("/api", urlRoutes);
 
 app.use(globalErrorHandler);
 

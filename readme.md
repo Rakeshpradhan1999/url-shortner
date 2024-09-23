@@ -1,117 +1,118 @@
-# TS-Node-Mongo-Base
+# URL Shortner
 
-A boilerplate project for creating backend applications using **TypeScript**, **Express**, **MongoDB**, and **Node.js**. This template is designed to help you quickly set up new projects with a clean and scalable structure.
+## Description
 
-## Features
+A simple URL shortener API that allows users to shorten long URLs. The API should provide endpoints to create, retrieve, update, and delete short URLs. It should also provide statistics on the number of times a short URL has been accessed.
 
-- **TypeScript** for static type checking and cleaner code.
-- **Express** for fast, unopinionated web framework for Node.js.
-- **MongoDB** for database storage.
-- **Mongoose** for MongoDB object modeling.
-- **dotenv** for environment variable management.
-- **CORS** enabled.
-- Structured with models, controllers, and routes for easy scalability.
+## Tech Stack
 
-## Project Structure
-
-```
-src/
-├── controllers/   # Controllers for handling business logic
-├── models/        # Mongoose models for MongoDB collections
-├── routes/        # Express routes
-├── config/        # Configuration files (if needed)
-├── app.ts         # Main Express app configuration
-└── server.ts      # Server start and MongoDB connection logic
-```
-
-## Requirements
-
-- **Node.js** (>= 18.x)
-- **MongoDB**
+- Node.js
+- Express.js
+- MongoDB
+- TypeScript
+- ESLint
 
 ## Installation
 
-1. Clone the repository:
+1. Clone the repository
+2. Install dependencies using `pnpm install`
+3. Create a `.env` file in the root directory and add the following variables:
 
-   ```bash
-   git clone https://github.com/your-username/ts-node-mongo-base.git
-   cd ts-node-mongo-base
-   ```
+```
+MONGO_URI=mongodb://localhost:27017/mydatabase
+PORT=5000
+```
 
-2. Install dependencies using pnpm:
+4. Run the server using `pnpm start`
 
-   ```bash
-   pnpm install
-   ```
+## Usage
 
-3. Set up environment variables. Create a `.env` file in the root directory and add the following:
+### Endpoints
 
-   ```bash
-   PORT=5000
-   MONGO_URI=mongodb://localhost:27017/mydatabase
-   ```
+- `POST /shorten`: Create a new short URL
+- `GET /shorten/:shortCode`: Retrieve the original URL from a short URL
+- `PUT /shorten/:shortCode`: Update an existing short URL
+- `DELETE /shorten/:shortCode`: Delete an existing short URL
 
-4. Run the development server:
+### Example Requests
 
-   ```bash
-   pnpm run dev
-   ```
+#### Create Short URL
 
-5. To build the project for production:
-
-   ```bash
-   pnpm run build
-   pnpm start
-   ```
-
-## DEMO API Endpoints
-
-| Method | Endpoint     | Description       |
-| ------ | ------------ | ----------------- |
-| GET    | `/api/users` | Get all users     |
-| POST   | `/api/users` | Create a new user |
-
-### Example `User` object:
-
-```json
+```
+POST /shorten
 {
-  "name": "John Doe",
-  "email": "john@example.com"
+  "url": "https://www.example.com/some/long/url"
 }
 ```
 
-## Development
-
-### Available Scripts
-
-- `pnpm run dev` - Runs the app in development mode with `nodemon` and `ts-node`.
-- `pnpm run build` - Builds the TypeScript code into JavaScript.
-- `pnpm start` - Starts the production server.
-
-### Linting and Formatting
-
-You can integrate ESLint and Prettier to maintain clean code, but it's optional.
-
-## Structured Response and Error Handling
-
-This template includes a unified response structure and global error handling for a consistent API.
-
-### Example Response Structure:
-
-```typescript
-export const sendResponse = (
-  res: Response,
-  success: boolean,
-  message: string = "Success",
-  data: any = null,
-  statusCode: number = 200
-) => {
-  return res.status(statusCode).json({
-    success,
-    message,
-    data,
-  });
-};
+```
+Response:
+{
+  "id": "1",
+  "url": "https://www.example.com/some/long/url",
+  "shortCode": "abc123",
+  "accessCount": 0,
+  "createdAt": "2021-09-01T12:00:00Z",
+  "updatedAt": "2021-09-01T12:00:00Z"
+}
 ```
 
-## Do not forgot to star ⭐️ this repository if you find it useful.
+#### Retrieve Original URL
+
+```
+GET /shorten/m7bmci
+```
+
+```
+Response:
+{
+  "id": "1",
+  "url": "https://www.example.com/some/long/url",
+  "shortCode": "m7bmci",
+  "accessCount": 1,
+  "createdAt": "2021-09-01T12:00:00Z",
+  "updatedAt": "2021-09-01T12:00:00Z"
+}
+```
+
+#### Update Short URL
+
+```
+PUT /shorten/m7bmci
+{
+  "url": "https://www.example.com/some/updated/url"
+}
+
+```
+
+```
+Response:
+{
+  "id": "1",
+  "url": "https://www.example.com/some/updated/url",
+  "shortCode": "m7bmci",
+  "accessCount": 0,
+  "createdAt": "2021-09-01T12:00:00Z",
+  "updatedAt": "2021-09-01T12:30:00Z"
+}
+```
+
+#### Delete Short URL
+
+```
+DELETE /shorten/m7bmci
+```
+
+```
+Response:
+{
+  "id": "1",
+  "url": "https://www.example.com/some/updated/url",
+  "shortCode": "m7bmci",
+  "accessCount": 0,
+  "createdAt": "2021-09-01T12:00:00Z",
+  "updatedAt": "2021-09-01T12:30:00Z"
+}
+```
+
+### This Project is following [roadmap.sh](https://roadmap.sh/projects/url-shortening-service)
